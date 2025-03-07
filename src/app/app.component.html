@@ -1,5 +1,5 @@
 <mat-toolbar *ngIf="verifiyIsloggedin()" color="primary">
-  <span>Teacher</span>
+  <span [routerLink]="'/students'">Teacher</span>
   <span class="example-spacer"></span>
   <button mat-flat-button [routerLink]="'/students'" color="basic">Students</button>
   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
