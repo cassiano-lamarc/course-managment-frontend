@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { LoaderServiceService } from '../services/loader-service.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent {
   formEmptyMessage = 'Todos os campos devem ser preenchidos!';
   showLoader = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private loaderService: LoaderServiceService, private route: Router) { }
+  constructor(private fb: FormBuilder, private authService: AuthService, private loaderService: LoaderServiceService, private route: Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     if (this.authService.isAuthenticatedUser())
@@ -34,7 +35,7 @@ export class LoginComponent {
       const username = this.loginForm.get('username').value;
       const password = this.loginForm.get('password').value;
 
-      this.authService.login(username, password);
+      this.authService.login(username, password, this.snackBar);
     } else this.loaderService.stop();
   }
 

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment.development';
 import { Router } from '@angular/router';
 import { LoaderServiceService } from './loader-service.service';
 import { finalize } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AuthService {
     this.isAuthenticated = !!localStorage.getItem(this.localStorageAuthUserData);
   }
 
-  login(username: string, password: string) {
+  login(username: string, password: string, snackBar: MatSnackBar) {
     this.http.post<UserCredencials>(`${environment.baseUrl}auth`, { username, password })
       .pipe(
         finalize(() => this.loader?.stop())
@@ -31,7 +32,7 @@ export class AuthService {
         },
         error: (err) => {
           if (err.status == 400)
-            alert('O nome de usuário ou senha estão incorretos. Tente novamente.');
+            snackBar.open('O nome de usuário ou senha estão incorretos. Tente novamente.', '', { duration: 5 * 1000 });
 
           console.log(err);
         }

@@ -7,8 +7,6 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
-import { AuthService } from './services/auth.service';
-import { UserCredencials } from './models/auth/user-credencials.model';
 import { Router } from '@angular/router';
 
 @Injectable()
