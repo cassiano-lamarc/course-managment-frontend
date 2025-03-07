@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
+import { LoaderServiceService } from './services/loader-service.service';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,14 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'course-managment-frontend';
 
-  constructor(private authService: AuthService, private route: Router) { }
+  constructor(private authService: AuthService, private loader: LoaderServiceService, private route: Router) { }
 
   verifiyIsloggedin(): boolean {
     return !!localStorage.getItem('UserData');
   }
 
   logout() {
+    this.loader.start();
     this.authService?.logout();
     this.route?.navigate(['/login']);
   }

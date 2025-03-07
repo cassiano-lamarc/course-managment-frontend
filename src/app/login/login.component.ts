@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { LoaderServiceService } from '../services/loader-service.service';
 
 @Component({
   selector: 'app-login',
@@ -14,9 +15,12 @@ export class LoginComponent {
   formEmptyMessage = 'Todos os campos devem ser preenchidos!';
   showLoader = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
+  constructor(private fb: FormBuilder, private authService: AuthService, private loaderService: LoaderServiceService, private route: Router) { }
 
   ngOnInit(): void {
+    if (this.authService.isAuthenticatedUser())
+      this.route.navigate(['/students']);
+
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -24,16 +28,14 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    this.showLoader = true;
+    this.loaderService?.start();
 
     if (this.loginForm.valid) {
       const username = this.loginForm.get('username').value;
       const password = this.loginForm.get('password').value;
 
       this.authService.login(username, password);
-    }
-
-    this.showLoader = false;
+    } else this.loaderService.stop();
   }
 
   getUserNameErrorMessage() {

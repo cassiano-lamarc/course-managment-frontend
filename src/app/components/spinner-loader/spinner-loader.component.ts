@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { LoaderServiceService } from 'src/app/services/loader-service.service';
 
 @Component({
   selector: 'app-spinner-loader',
@@ -6,6 +7,14 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./spinner-loader.component.scss']
 })
 
-export class SpinnerLoaderComponent {
-  @Input() show: boolean;
+export class SpinnerLoaderComponent implements OnInit {
+  isLoading: boolean = false;
+
+  constructor(private loaderService: LoaderServiceService) { }
+
+  ngOnInit(): void {
+    this.loaderService.loaderState$.subscribe((state) => {
+      this.isLoading = state;
+    });
+  }
 }
