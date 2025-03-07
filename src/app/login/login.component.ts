@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  hide = true;
   loginForm?: FormGroup;
   formEmptyMessage = 'Todos os campos devem ser preenchidos!';
 
@@ -28,7 +29,21 @@ export class LoginComponent {
 
       this.authService.login(username, password);
     }
-    else
-      alert(this.formEmptyMessage);
+  }
+
+  getUserNameErrorMessage() {
+    if (this.loginForm?.get('username')?.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return '';
+  }
+
+  getPasswordErrorMessage() {
+    if (this.loginForm?.get('password')?.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return '';
   }
 }
