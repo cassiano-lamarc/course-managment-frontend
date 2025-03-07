@@ -12,6 +12,7 @@ export class LoginComponent {
   hide = true;
   loginForm?: FormGroup;
   formEmptyMessage = 'Todos os campos devem ser preenchidos!';
+  showLoader = false;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
 
@@ -23,12 +24,16 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
+    this.showLoader = true;
+
     if (this.loginForm.valid) {
       const username = this.loginForm.get('username').value;
       const password = this.loginForm.get('password').value;
 
       this.authService.login(username, password);
     }
+
+    this.showLoader = false;
   }
 
   getUserNameErrorMessage() {

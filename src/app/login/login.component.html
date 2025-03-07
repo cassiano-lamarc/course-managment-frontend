@@ -17,11 +17,13 @@
                             [attr.aria-pressed]="hide">
                             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
-                        <mat-error *ngIf="loginForm?.get('password').invalid">{{getUserNameErrorMessage()}}</mat-error>
+                        <mat-error *ngIf="loginForm?.get('password').invalid">{{getPasswordErrorMessage()}}</mat-error>
                     </mat-form-field>
                 </div>
-                <button mat-raised-button color="primary" class="w-100" style="margin-top: 6px;" (click)="onSubmit()">Login</button>
+                <button mat-raised-button color="primary" class="w-100" style="margin-top: 6px;"
+                    (click)="onSubmit()">Login</button>
             </form>
         </div>
     </div>
 </div>
+<app-spinner-loader [show]="showLoader"></app-spinner-loader>
