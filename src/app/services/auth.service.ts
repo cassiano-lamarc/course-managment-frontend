@@ -32,7 +32,9 @@ export class AuthService {
         },
         error: (err) => {
           if (err.status == 400)
-            snackBar.open('O nome de usuário ou senha estão incorretos. Tente novamente.', '', { duration: 5 * 1000 });
+            snackBar.open('Email or Password is not correct.', '', { duration: 3 * 1000 });
+          else
+            snackBar.open('Server not responding. Try again later!')
 
           console.log(err);
         }

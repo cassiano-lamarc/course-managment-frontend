@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,12 +11,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { SpinnerLoaderComponent } from './components/spinner-loader/spinner-loader.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HttpInterceptorInterceptor } from './http-interceptor.interceptor';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SpinnerLoaderComponent
-  ],
+  declarations: [AppComponent, SpinnerLoaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,7 +26,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatIconModule,
     MatProgressSpinnerModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

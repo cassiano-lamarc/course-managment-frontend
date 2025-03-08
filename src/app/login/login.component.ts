@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   hide = true;
@@ -16,16 +16,22 @@ export class LoginComponent {
   formEmptyMessage = 'Todos os campos devem ser preenchidos!';
   showLoader = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private loaderService: LoaderServiceService, private route: Router, private snackBar: MatSnackBar) { }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private loaderService: LoaderServiceService,
+    private route: Router,
+    private snackBar: MatSnackBar
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     if (this.authService.isAuthenticatedUser())
       this.route.navigate(['/students']);
-
-    this.loginForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required]
-    });
   }
 
   onSubmit(): void {
