@@ -23,7 +23,7 @@ export class LoginComponent {
       this.route.navigate(['/students']);
 
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
@@ -32,15 +32,15 @@ export class LoginComponent {
     this.loaderService?.start();
 
     if (this.loginForm.valid) {
-      const username = this.loginForm.get('username').value;
+      const email = this.loginForm.get('email').value;
       const password = this.loginForm.get('password').value;
 
-      this.authService.login(username, password, this.snackBar);
+      this.authService.login(email, password, this.snackBar);
     } else this.loaderService.stop();
   }
 
-  getUserNameErrorMessage() {
-    if (this.loginForm?.get('username')?.hasError('required')) {
+  getEmailErrorMessage() {
+    if (this.loginForm?.get('email')?.hasError('required')) {
       return 'You must enter a value';
     }
 

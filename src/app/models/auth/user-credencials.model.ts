@@ -1,6 +1,5 @@
 export class UserCredencials {
-    guid: string;
-    userName: string;
+    id: string;
     email: string;
     token: string;
 }

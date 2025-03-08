@@ -18,8 +18,8 @@ export class AuthService {
     this.isAuthenticated = !!localStorage.getItem(this.localStorageAuthUserData);
   }
 
-  login(username: string, password: string, snackBar: MatSnackBar) {
-    this.http.post<UserCredencials>(`${environment.baseUrl}auth`, { username, password })
+  login(email: string, password: string, snackBar: MatSnackBar) {
+    this.http.post<UserCredencials>(`${environment.baseUrl}auth`, { email, password })
       .pipe(
         finalize(() => this.loader?.stop())
       )
