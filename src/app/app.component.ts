@@ -10,6 +10,7 @@ import { LoaderServiceService } from './services/loader-service.service';
 })
 export class AppComponent {
   title = 'course-managment-frontend';
+  userLoggedEmail = JSON.parse(localStorage?.getItem('UserData'))?.email;
 
   constructor(private authService: AuthService, private loader: LoaderServiceService, private route: Router) { }
 
