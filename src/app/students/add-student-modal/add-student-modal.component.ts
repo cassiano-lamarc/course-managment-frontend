@@ -8,9 +8,9 @@ import {
 import { DateAdapter } from '@angular/material/core';
 import { StudentServiceService } from '../services/student-service.service';
 import { LoaderServiceService } from 'src/app/services/loader-service.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-student-modal',
@@ -27,7 +27,6 @@ export class AddStudentModalComponent {
     private dateAdapter: DateAdapter<Date>,
     private service: StudentServiceService,
     private loader: LoaderServiceService,
-    private snackBar: MatSnackBar,
     public dialog: MatDialog
   ) {
     this.studentForm = fb.group({
@@ -62,14 +61,9 @@ export class AddStudentModalComponent {
       )
       .subscribe({
         next: (res) => {
-          this.snackBar.open('Success', '', { duration: 5 * 1000 });
+          Swal.fire('Success', 'Student has been created', 'success');
           this.dialog?.closeAll();
-        },
-        error: () => {
-          this.snackBar.open('Ocourred an error adding student', '', {
-            duration: 5 * 1000,
-          });
-        },
+        }
       });
   }
 }

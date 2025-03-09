@@ -5,7 +5,8 @@ import { environment } from 'src/environments/environment.development';
 import { Router } from '@angular/router';
 import { LoaderServiceService } from './loader-service.service';
 import { finalize } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import Swal from 'sweetalert2';
+import { BaseResponse } from '../models/base-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,13 +25,13 @@ export class AuthService {
     );
   }
 
-  login(email: string, password: string, snackBar: MatSnackBar) {
+  login(email: string, password: string) {
     this.http
-      .post<UserCredencials>(`${environment.baseUrl}auth`, { email, password })
+      .post<BaseResponse<UserCredencials>>(`${environment.baseUrl}auth`, { email, password })
       .pipe(finalize(() => this.loader?.stop()))
       .subscribe({
         next: (res) => {
-          this.isAuthenticated = res?.token ? true : false;
+          this.isAuthenticated = res?.Data?.token ? true : false;
           localStorage.setItem(
             this.localStorageAuthUserData,
             JSON.stringify(res)
@@ -40,10 +41,13 @@ export class AuthService {
         },
         error: (err) => {
           if (err.status == 400)
-            snackBar.open('Email or Password is not correct.', '', {
-              duration: 3 * 1000,
-            });
-          else snackBar.open('Server not responding. Try again later!');
+            Swal?.fire('Wrong', 'Email or Password is not correct.', 'warning');
+          else
+            Swal?.fire(
+              'Error',
+              'Server not responding. Try again later!',
+              'error'
+            );
 
           console.log(err);
         },

@@ -8,7 +8,6 @@ import { MatSort } from '@angular/material/sort';
 import { StudentServiceService } from './services/student-service.service';
 import { LoaderServiceService } from '../services/loader-service.service';
 import { finalize } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -26,8 +25,7 @@ export class ListStudentsComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private service: StudentServiceService,
-    private loader: LoaderServiceService,
-    private snack: MatSnackBar
+    private loader: LoaderServiceService
   ) {}
 
   ngOnInit(): void {
@@ -45,12 +43,9 @@ export class ListStudentsComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          this.dataSource.data = res;
+          this.dataSource.data = res?.Data;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-        },
-        error: () => {
-          this.snack.open('Ocourred an error loading students');
         },
       });
   }
@@ -79,25 +74,31 @@ export class ListStudentsComponent implements OnInit {
       showCancelButton: true,
     }).then((result) => {
       if (result?.isConfirmed) {
-        this.service?.remove(item?.id).subscribe({
-          next: (res) => {
-            if (res)
-              Swal.fire('Success', 'The register has been deleted', 'success');
-            else
-              Swal.fire(
-                'Error',
-                'Ocourred an error deleting the student',
-                'error'
-              );
-          },
-          error: () => {
-            Swal.fire(
-              'Error',
-              'Ocourred an error deleting the student',
-              'error'
-            );
-          },
-        });
+        this.loader?.start();
+        this.service
+          ?.remove(item?.id)
+          .pipe(
+            finalize(() => {
+              this.loader.stop();
+            })
+          )
+          .subscribe({
+            next: (res) => {
+              if (res?.Data) {
+                Swal.fire(
+                  'Success',
+                  'The register has been deleted',
+                  'success'
+                );
+                this.loadData();
+              } else
+                Swal.fire(
+                  'Error',
+                  'Ocourred an error deleting the student',
+                  'error'
+                );
+            },
+          });
       }
     });
   }

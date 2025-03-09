@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { LoaderServiceService } from '../services/loader-service.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -21,11 +20,10 @@ export class LoginComponent {
     private authService: AuthService,
     private loaderService: LoaderServiceService,
     private route: Router,
-    private snackBar: MatSnackBar
   ) {
     this.loginForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
+      email: [null, [Validators.required, Validators.email]],
+      password: [null, Validators.required],
     });
   }
 
@@ -41,7 +39,7 @@ export class LoginComponent {
       const email = this.loginForm.get('email').value;
       const password = this.loginForm.get('password').value;
 
-      this.authService.login(email, password, this.snackBar);
+      this.authService.login(email, password);
     } else this.loaderService.stop();
   }
 
@@ -49,6 +47,9 @@ export class LoginComponent {
     if (this.loginForm?.get('email')?.hasError('required')) {
       return 'You must enter a value';
     }
+
+    if (this.loginForm?.get('email')?.hasError('email'))
+      return 'Email is not valid';
 
     return '';
   }
