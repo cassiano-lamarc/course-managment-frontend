@@ -30,6 +30,6 @@ export class StudentServiceService {
   }
 
   edit(id, data): Observable<boolean> {
-    return this.http.put<boolean>(`${environment.baseUrl}/${id}`, data);
+    return this.http.put<boolean>(`${environment.baseUrl}Students/${id}`, data);
   }
 }

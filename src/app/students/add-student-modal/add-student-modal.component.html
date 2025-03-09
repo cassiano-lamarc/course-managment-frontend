@@ -78,7 +78,7 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="studentForm?.invalid"
+        [disabled]="studentForm?.invalid || (isEdit && !this.studentForm.touched)"
         (click)="confirm()"
       >
         Confirm <mat-icon>check</mat-icon>
