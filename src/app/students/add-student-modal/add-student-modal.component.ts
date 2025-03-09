@@ -1,33 +1,37 @@
-import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { StudentServiceService } from '../services/student-service.service';
 import { LoaderServiceService } from 'src/app/services/loader-service.service';
 import { finalize } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { StudentListModel } from 'src/app/students/models/student-list.model';
+import { StudentModel } from '../models/student.model';
+
+export interface DialogData {
+  student: StudentListModel;
+}
 
 @Component({
   selector: 'app-add-student-modal',
   templateUrl: './add-student-modal.component.html',
   styleUrls: ['./add-student-modal.component.scss'],
 })
-export class AddStudentModalComponent {
+export class AddStudentModalComponent implements OnInit {
   nameMaxLength = 100;
   emailMaxLength = 200;
   studentForm?: FormGroup;
+  dialogTitle: string;
+  isEdit = false;
 
   constructor(
     private fb: FormBuilder,
     private dateAdapter: DateAdapter<Date>,
     private service: StudentServiceService,
     private loader: LoaderServiceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
     this.studentForm = fb.group({
       name: [
@@ -47,23 +51,65 @@ export class AddStudentModalComponent {
     });
 
     this.dateAdapter.setLocale('pt-BR');
+
+    this.isEdit = (this.data?.student?.id ?? 0) > 0;
+    this.dialogTitle = this.isEdit ? 'Edit' : 'Register';
   }
 
-  confirm() {
+  ngOnInit(): void {
+    if (this.isEdit) {
+      this.loader?.start();
+      this.service
+        .getById(this.data?.student?.id)
+        .pipe(
+          finalize(() => {
+            this.loader?.stop();
+          })
+        )
+        .subscribe({
+          next: (res: StudentModel) => {
+            this.studentForm?.get('name').setValue(res?.name);
+            this.studentForm?.get('email').setValue(res?.email);
+            this.studentForm?.get('birthDate').setValue(res?.birthDate);
+            this.studentForm?.get('phone').setValue(res?.phone);
+          },
+          error: () => {
+            this.dialog?.closeAll();
+          },
+        });
+    }
+  }
+
+  confirm(): void {
     this.loader?.start();
 
-    this.service
-      ?.add(this.studentForm?.value)
-      .pipe(
-        finalize(() => {
-          this.loader?.stop();
-        })
-      )
-      .subscribe({
-        next: (res) => {
-          Swal.fire('Success', 'Student has been created', 'success');
-          this.dialog?.closeAll();
-        }
-      });
+    if (this.isEdit)
+      this.service
+        .edit(this.data?.student?.id, this.studentForm.value)
+        .pipe(
+          finalize(() => {
+            this.loader?.stop();
+          })
+        )
+        .subscribe({
+          next: (res) => {
+            Swal.fire('Success', 'Student has been edited', 'success');
+            this.dialog?.closeAll();
+          },
+        });
+    else
+      this.service
+        .add(this.studentForm?.value)
+        .pipe(
+          finalize(() => {
+            this.loader?.stop();
+          })
+        )
+        .subscribe({
+          next: (res) => {
+            Swal.fire('Success', 'Student has been created', 'success');
+            this.dialog?.closeAll();
+          },
+        });
   }
 }

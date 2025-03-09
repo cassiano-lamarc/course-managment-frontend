@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddStudentModalComponent } from './add-student-modal/add-student-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-import { StudentListModel } from '../models/student-list.model';
+import { StudentListModel } from './models/student-list.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -56,6 +56,20 @@ export class ListStudentsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.loadData();
     });
+  }
+
+  openEditStudentDialog(row) {
+    const dialogRef = this.dialog.open(AddStudentModalComponent, {
+      data: {
+        student: row        
+      }
+    })
+
+    dialogRef
+      .afterClosed()
+      .subscribe(() => {
+        this.loadData();
+      })
   }
 
   applyFilter(event) {
