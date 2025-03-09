@@ -17,4 +17,8 @@ export class StudentServiceService {
   get(): Observable<StudentListModel[]>{
     return this.http.get<StudentListModel[]>(`${environment.baseUrl}Students`);
   }
+
+  remove(id): Observable<boolean>{
+    return this.http.delete<boolean>(`${environment.baseUrl}Students/${id}`);
+  }
 }

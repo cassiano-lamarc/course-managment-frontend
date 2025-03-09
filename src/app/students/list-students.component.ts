@@ -9,6 +9,7 @@ import { StudentServiceService } from './services/student-service.service';
 import { LoaderServiceService } from '../services/loader-service.service';
 import { finalize } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-list-students',
@@ -18,7 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ListStudentsComponent implements OnInit {
   dataSource: MatTableDataSource<StudentListModel> =
     new MatTableDataSource<StudentListModel>();
-  displayedColumns: string[] = ['id', 'name', 'email', 'phone'];
+  displayedColumns: string[] = ['id', 'name', 'email', 'phone', 'actions'];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -44,7 +45,6 @@ export class ListStudentsComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          debugger;
           this.dataSource.data = res;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -70,5 +70,35 @@ export class ListStudentsComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  askConfirmationDelete(item): void {
+    Swal?.fire({
+      icon: 'question',
+      title: `Do you want delete ${item?.name}?`,
+      showCancelButton: true,
+    }).then((result) => {
+      if (result?.isConfirmed) {
+        this.service?.remove(item?.id).subscribe({
+          next: (res) => {
+            if (res)
+              Swal.fire('Success', 'The register has been deleted', 'success');
+            else
+              Swal.fire(
+                'Error',
+                'Ocourred an error deleting the student',
+                'error'
+              );
+          },
+          error: () => {
+            Swal.fire(
+              'Error',
+              'Ocourred an error deleting the student',
+              'error'
+            );
+          },
+        });
+      }
+    });
   }
 }

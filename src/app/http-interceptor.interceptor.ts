@@ -8,10 +8,11 @@ import {
 } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Injectable()
 export class HttpInterceptorInterceptor implements HttpInterceptor {
-  constructor(private route: Router) {}
+  constructor(private route: Router, private authService: AuthService) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -29,7 +30,7 @@ export class HttpInterceptorInterceptor implements HttpInterceptor {
       catchError((err) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status == 401) {
-            localStorage.removeItem('UserData');
+            this.authService?.logout();
             this.route?.navigate(['/login']);
           }
         }
