@@ -1,8 +1,5 @@
 <div class="container">
-  <div class="row d-flex justify-content-center">
-    <div class="col-12 mt-4">
-      <h2><mat-icon>face</mat-icon> Students</h2>
-    </div>
+  <div class="row d-flex justify-content-center mt-3">
     <div class="col-12">
       <mat-form-field>
         <mat-label>Filter</mat-label>
@@ -56,7 +53,9 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let row">
-              <button mat-icon-button (click)="askConfirmationDelete(row)"><mat-icon>delete</mat-icon></button>
+              <button mat-icon-button (click)="askConfirmationDelete(row)">
+                <mat-icon>delete</mat-icon>
+              </button>
             </td>
           </ng-container>
 
