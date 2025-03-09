@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { LoaderServiceService } from './loader-service.service';
 import { finalize } from 'rxjs';
 import Swal from 'sweetalert2';
-import { BaseResponse } from '../models/base-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,30 +26,18 @@ export class AuthService {
 
   login(email: string, password: string) {
     this.http
-      .post<BaseResponse<UserCredencials>>(`${environment.baseUrl}auth`, { email, password })
+      .post<UserCredencials>(`${environment.baseUrl}auth`, { email, password })
       .pipe(finalize(() => this.loader?.stop()))
       .subscribe({
         next: (res) => {
-          this.isAuthenticated = res?.Data?.token ? true : false;
+          this.isAuthenticated = res?.token ? true : false;
           localStorage.setItem(
             this.localStorageAuthUserData,
             JSON.stringify(res)
           );
 
           this.router.navigate(['/students']);
-        },
-        error: (err) => {
-          if (err.status == 400)
-            Swal?.fire('Wrong', 'Email or Password is not correct.', 'warning');
-          else
-            Swal?.fire(
-              'Error',
-              'Server not responding. Try again later!',
-              'error'
-            );
-
-          console.log(err);
-        },
+        }
       });
   }
 

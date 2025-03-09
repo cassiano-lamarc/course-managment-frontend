@@ -43,7 +43,7 @@ export class ListStudentsComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          this.dataSource.data = res?.Data;
+          this.dataSource.data = res;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         },
@@ -84,7 +84,7 @@ export class ListStudentsComponent implements OnInit {
           )
           .subscribe({
             next: (res) => {
-              if (res?.Data) {
+              if (res) {
                 Swal.fire(
                   'Success',
                   'The register has been deleted',
