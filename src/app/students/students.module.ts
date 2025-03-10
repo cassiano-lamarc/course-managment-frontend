@@ -14,9 +14,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { DetailStudentComponent } from './detail-student/detail-student.component';
 
 @NgModule({
-  declarations: [ListStudentsComponent, AddStudentModalComponent],
+  declarations: [ListStudentsComponent, AddStudentModalComponent, DetailStudentComponent],
   imports: [
     CommonModule,
     StudentsRoutingModule,

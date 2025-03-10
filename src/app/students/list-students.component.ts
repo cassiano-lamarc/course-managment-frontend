@@ -9,6 +9,7 @@ import { StudentServiceService } from './services/student-service.service';
 import { LoaderServiceService } from '../services/loader-service.service';
 import { finalize } from 'rxjs';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-students',
@@ -25,7 +26,8 @@ export class ListStudentsComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private service: StudentServiceService,
-    private loader: LoaderServiceService
+    private loader: LoaderServiceService,
+    private route: Router
   ) {}
 
   ngOnInit(): void {
@@ -61,15 +63,13 @@ export class ListStudentsComponent implements OnInit {
   openEditStudentDialog(row) {
     const dialogRef = this.dialog.open(AddStudentModalComponent, {
       data: {
-        student: row        
-      }
-    })
+        student: row,
+      },
+    });
 
-    dialogRef
-      .afterClosed()
-      .subscribe(() => {
-        this.loadData();
-      })
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadData();
+    });
   }
 
   applyFilter(event) {
@@ -84,7 +84,8 @@ export class ListStudentsComponent implements OnInit {
   askConfirmationDelete(item): void {
     Swal?.fire({
       icon: 'question',
-      title: `Do you want delete ${item?.name}?`,
+      title: 'Are you sure?',
+      text: `Do you want delete ${item?.name}?`,
       showCancelButton: true,
     }).then((result) => {
       if (result?.isConfirmed) {
@@ -115,5 +116,9 @@ export class ListStudentsComponent implements OnInit {
           });
       }
     });
+  }
+
+  detailStudent(id): void {
+    this.route?.navigate([`/students/detail/${id}`]);
   }
 }
