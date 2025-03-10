@@ -15,9 +15,14 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DetailStudentComponent } from './detail-student/detail-student.component';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 @NgModule({
-  declarations: [ListStudentsComponent, AddStudentModalComponent, DetailStudentComponent],
+  declarations: [
+    ListStudentsComponent,
+    AddStudentModalComponent,
+    DetailStudentComponent,
+  ],
   imports: [
     CommonModule,
     StudentsRoutingModule,
@@ -31,6 +36,9 @@ import { DetailStudentComponent } from './detail-student/detail-student.componen
     MatNativeDateModule,
     MatTableModule,
     MatPaginatorModule,
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
+  providers: [provideNgxMask()],
 })
 export class StudentsModule {}

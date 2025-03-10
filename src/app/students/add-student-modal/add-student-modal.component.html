@@ -64,7 +64,7 @@
       <div class="col-12">
         <mat-form-field class="w-100">
           <mat-label>Phone Number</mat-label>
-          <input matInput formControlName="phone" maxlength="20" />
+          <input mask="(00) 0 0000-0000" matInput formControlName="phone" maxlength="20" />
           <mat-error *ngIf="studentForm?.get('phone')?.hasError('maxlength')">
             Please type a valid Phone Number!
           </mat-error>
