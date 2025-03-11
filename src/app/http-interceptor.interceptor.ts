@@ -31,8 +31,8 @@ export class HttpInterceptorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err) => {
         if (err instanceof HttpErrorResponse) {
-          if (err?.status == HttpStatusCode.BadRequest && err?.error?.Message) {
-            Swal.fire('Warning', err?.error?.Message, 'warning');
+          if (err?.status == HttpStatusCode.BadRequest && err?.error?.detail) {
+            Swal.fire('Warning', err?.error?.detail, 'warning');
             return throwError(err);
           }
 
