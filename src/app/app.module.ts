@@ -12,9 +12,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { SpinnerLoaderComponent } from './components/spinner-loader/spinner-loader.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpInterceptorInterceptor } from './core/interceptors/http-interceptor.interceptor';
+import { NotfoundComponent } from './notfound/notfound.component';
 
 @NgModule({
-  declarations: [AppComponent, SpinnerLoaderComponent],
+  declarations: [AppComponent, SpinnerLoaderComponent, NotfoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

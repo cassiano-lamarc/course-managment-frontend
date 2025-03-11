@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
+import { NotfoundComponent } from './notfound/notfound.component';
 
 const titleDefault = 'Cursto Teacher';
 
@@ -27,8 +28,10 @@ const routes: Routes = [
   },
   {
     path: "**",
-    redirectTo: 'login',
-    pathMatch: 'full'
+    component: NotfoundComponent,
+    data: {
+      title: `${titleDefault} - Page not found`
+    }
   }
 ];
 
