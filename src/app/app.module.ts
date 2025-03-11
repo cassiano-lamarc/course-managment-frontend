@@ -11,7 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { SpinnerLoaderComponent } from './components/spinner-loader/spinner-loader.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { HttpInterceptorInterceptor } from './http-interceptor.interceptor';
+import { HttpInterceptorInterceptor } from './core/interceptors/http-interceptor.interceptor';
 
 @NgModule({
   declarations: [AppComponent, SpinnerLoaderComponent],

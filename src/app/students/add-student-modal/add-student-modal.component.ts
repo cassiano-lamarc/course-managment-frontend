@@ -1,9 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import { StudentServiceService } from '../services/student-service.service';
-import { LoaderServiceService } from 'src/app/services/loader-service.service';
-import { finalize } from 'rxjs';
+import { StudentService } from '../../shared/services/students/student.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { StudentListModel } from 'src/app/students/models/student-list.model';
@@ -28,8 +26,7 @@ export class AddStudentModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dateAdapter: DateAdapter<Date>,
-    private service: StudentServiceService,
-    private loader: LoaderServiceService,
+    private service: StudentService,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
@@ -58,14 +55,8 @@ export class AddStudentModalComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isEdit) {
-      this.loader?.start();
       this.service
         .getById(this.data?.student?.id)
-        .pipe(
-          finalize(() => {
-            this.loader?.stop();
-          })
-        )
         .subscribe({
           next: (res: StudentModel) => {
             this.studentForm?.get('name').setValue(res?.name);
@@ -81,16 +72,9 @@ export class AddStudentModalComponent implements OnInit {
   }
 
   confirm(): void {
-    this.loader?.start();
-
     if (this.isEdit)
       this.service
         .edit(this.data?.student?.id, this.studentForm.value)
-        .pipe(
-          finalize(() => {
-            this.loader?.stop();
-          })
-        )
         .subscribe({
           next: (res) => {
             Swal.fire('Success', 'Student has been edited', 'success');
@@ -100,11 +84,6 @@ export class AddStudentModalComponent implements OnInit {
     else
       this.service
         .add(this.studentForm?.value)
-        .pipe(
-          finalize(() => {
-            this.loader?.stop();
-          })
-        )
         .subscribe({
           next: (res) => {
             Swal.fire('Success', 'Student has been created', 'success');

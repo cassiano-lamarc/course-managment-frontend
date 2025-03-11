@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { LoaderServiceService } from '../services/loader-service.service';
+import { AuthService } from '../shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +17,6 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private loaderService: LoaderServiceService,
     private route: Router,
   ) {
     this.loginForm = this.fb.group({
@@ -33,14 +31,12 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    this.loaderService?.start();
-
     if (this.loginForm.valid) {
       const email = this.loginForm.get('email').value;
       const password = this.loginForm.get('password').value;
 
       this.authService.login(email, password);
-    } else this.loaderService.stop();
+    }
   }
 
   getEmailErrorMessage() {

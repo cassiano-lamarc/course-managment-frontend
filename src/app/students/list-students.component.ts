@@ -5,9 +5,7 @@ import { StudentListModel } from './models/student-list.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { StudentServiceService } from './services/student-service.service';
-import { LoaderServiceService } from '../services/loader-service.service';
-import { finalize } from 'rxjs';
+import { StudentService } from '../shared/services/students/student.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
@@ -25,8 +23,7 @@ export class ListStudentsComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private service: StudentServiceService,
-    private loader: LoaderServiceService,
+    private service: StudentService,
     private route: Router
   ) {}
 
@@ -35,14 +32,8 @@ export class ListStudentsComponent implements OnInit {
   }
 
   loadData() {
-    this.loader?.start();
     this.service
       ?.get()
-      .pipe(
-        finalize(() => {
-          this.loader.stop();
-        })
-      )
       .subscribe({
         next: (res) => {
           this.dataSource.data = res;
@@ -89,14 +80,8 @@ export class ListStudentsComponent implements OnInit {
       showCancelButton: true,
     }).then((result) => {
       if (result?.isConfirmed) {
-        this.loader?.start();
         this.service
           ?.remove(item?.id)
-          .pipe(
-            finalize(() => {
-              this.loader.stop();
-            })
-          )
           .subscribe({
             next: (res) => {
               if (res) {

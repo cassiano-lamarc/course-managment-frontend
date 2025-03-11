@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './services/auth.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { LoaderServiceService } from './services/loader-service.service';
 import { Title } from '@angular/platform-browser';
 import { filter } from 'rxjs';
+import { AuthService } from './shared/services/auth/auth.service';
+import { LoaderService } from './shared/services/loader/loader.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private loader: LoaderServiceService,
+    private loader: LoaderService,
     private route: Router,
     private router: Router,
     private activatedRoute: ActivatedRoute,

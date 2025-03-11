@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StudentListModel } from 'src/app/students/models/student-list.model';
 import { environment } from 'src/environments/environment.development';
-import { StudentModel } from '../models/student.model';
+import { StudentModel } from '../../../students/models/student.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class StudentServiceService {
+export class StudentService {
   constructor(private http: HttpClient) {}
 
   add(body): Observable<number> {
