@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import { StudentService } from '../../shared/services/students/student.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { StudentListModel } from 'src/app/students/models/student-list.model';
 import { StudentModel } from '../models/student.model';
+import { StudentListModel } from '../models/student-list.model';
+import { StudentService } from 'src/app/shared/services/students/student.service';
 
 export interface DialogData {
   student: StudentListModel;
@@ -55,19 +55,17 @@ export class AddStudentModalComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isEdit) {
-      this.service
-        .getById(this.data?.student?.id)
-        .subscribe({
-          next: (res: StudentModel) => {
-            this.studentForm?.get('name').setValue(res?.name);
-            this.studentForm?.get('email').setValue(res?.email);
-            this.studentForm?.get('birthDate').setValue(res?.birthDate);
-            this.studentForm?.get('phone').setValue(res?.phone);
-          },
-          error: () => {
-            this.dialog?.closeAll();
-          },
-        });
+      this.service.getById(this.data?.student?.id).subscribe({
+        next: (res: StudentModel) => {
+          this.studentForm?.get('name').setValue(res?.name);
+          this.studentForm?.get('email').setValue(res?.email);
+          this.studentForm?.get('birthDate').setValue(res?.birthDate);
+          this.studentForm?.get('phone').setValue(res?.phone);
+        },
+        error: () => {
+          this.dialog?.closeAll();
+        },
+      });
     }
   }
 
@@ -82,13 +80,11 @@ export class AddStudentModalComponent implements OnInit {
           },
         });
     else
-      this.service
-        .add(this.studentForm?.value)
-        .subscribe({
-          next: (res) => {
-            Swal.fire('Success', 'Student has been created', 'success');
-            this.dialog?.closeAll();
-          },
-        });
+      this.service.add(this.studentForm?.value).subscribe({
+        next: (res) => {
+          Swal.fire('Success', 'Student has been created', 'success');
+          this.dialog?.closeAll();
+        },
+      });
   }
 }

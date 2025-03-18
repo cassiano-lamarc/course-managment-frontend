@@ -1,42 +1,44 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
-import { NotfoundComponent } from './notfound/notfound.component';
+import { NotfoundComponent } from './pages/notfound/notfound.component';
 
 const titleDefault = 'Cursto Teacher';
 
 const routes: Routes = [
   {
     path: 'students',
-    loadChildren: () => import('./students/students.module').then(m => m.StudentsModule),
+    loadChildren: () =>
+      import('./pages/students/students.module').then((m) => m.StudentsModule),
     canActivate: [AuthGuard],
     data: {
-      title: `${titleDefault} - Students`
-    }
+      title: `${titleDefault} - Students`,
+    },
   },
   {
     path: '',
     redirectTo: 'students',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
+    loadChildren: () =>
+      import('./pages/login/login.module').then((m) => m.LoginModule),
     data: {
-      title: `${titleDefault} - Login`
-    }
+      title: `${titleDefault} - Login`,
+    },
   },
   {
-    path: "**",
+    path: '**',
     component: NotfoundComponent,
     data: {
-      title: `${titleDefault} - Page not found`
-    }
-  }
+      title: `${titleDefault} - Page not found`,
+    },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

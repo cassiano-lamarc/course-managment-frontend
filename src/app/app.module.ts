@@ -9,10 +9,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-import { SpinnerLoaderComponent } from './components/spinner-loader/spinner-loader.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpInterceptorInterceptor } from './core/interceptors/http-interceptor.interceptor';
-import { NotfoundComponent } from './notfound/notfound.component';
+import { SpinnerLoaderComponent } from './components/spinner-loader/spinner-loader.component';
+import { NotfoundComponent } from './pages/notfound/notfound.component';
 
 @NgModule({
   declarations: [AppComponent, SpinnerLoaderComponent, NotfoundComponent],

@@ -1,0 +1,13 @@
+<mat-stepper linear="true" #stepper>
+  <mat-step>
+    <ng-template matStepLabel>Fill the Student Data</ng-template>
+    <app-add-student-form></app-add-student-form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Choose the Course</ng-template>
+    <app-add-course></app-add-course>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Payment</ng-template>
+  </mat-step>
+</mat-stepper>

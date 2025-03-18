@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { StudentsRoutingModule } from './students-routing.module';
-import { ListStudentsComponent } from './list-students.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { AddStudentModalComponent } from './add-student-modal/add-student-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,8 +12,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { DetailStudentComponent } from './detail-student/detail-student.component';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { ListStudentsComponent } from './list-students.component';
+import { AddStudentModalComponent } from './add-student-modal/add-student-modal.component';
+import { DetailStudentComponent } from './detail-student/detail-student.component';
+import { AddStudentModule } from './add-student/add-student.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
     MatTableModule,
     MatPaginatorModule,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    AddStudentModule,
   ],
   providers: [provideNgxMask()],
 })

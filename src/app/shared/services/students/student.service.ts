@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { StudentListModel } from 'src/app/students/models/student-list.model';
+import { StudentListModel } from 'src/app/pages/students/models/student-list.model';
+import { StudentModel } from 'src/app/pages/students/models/student.model';
 import { environment } from 'src/environments/environment.development';
-import { StudentModel } from '../../../students/models/student.model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,9 +24,7 @@ export class StudentService {
   }
 
   getById(id): Observable<StudentModel> {
-    return this.http.get<StudentModel>(
-      `${environment.baseUrl}Students/${id}`
-    );
+    return this.http.get<StudentModel>(`${environment.baseUrl}Students/${id}`);
   }
 
   edit(id, data): Observable<boolean> {

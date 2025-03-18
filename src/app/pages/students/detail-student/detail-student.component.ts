@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StudentService } from '../../shared/services/students/student.service';
 import { StudentModel } from '../models/student.model';
 import Swal from 'sweetalert2';
+import { StudentService } from 'src/app/shared/services/students/student.service';
 
 @Component({
   selector: 'app-detail-student',
@@ -16,7 +16,7 @@ export class DetailStudentComponent implements OnInit {
   constructor(
     private activedRoute: ActivatedRoute,
     private service: StudentService,
-    private route: Router,
+    private route: Router
   ) {
     this.studentId = Number(this.activedRoute?.snapshot?.paramMap?.get('id'));
   }
@@ -45,25 +45,19 @@ export class DetailStudentComponent implements OnInit {
       showCancelButton: true,
     }).then((result) => {
       if (result?.isConfirmed) {
-        this.service
-          ?.remove(this.student?.id)
-          .subscribe({
-            next: (res) => {
-              if (res) {
-                Swal.fire(
-                  'Success',
-                  'The register has been deleted',
-                  'success'
-                );
-                this.route.navigate(['/students']);
-              } else
-                Swal.fire(
-                  'Error',
-                  'Ocourred an error deleting the student',
-                  'error'
-                );
-            },
-          });
+        this.service?.remove(this.student?.id).subscribe({
+          next: (res) => {
+            if (res) {
+              Swal.fire('Success', 'The register has been deleted', 'success');
+              this.route.navigate(['/students']);
+            } else
+              Swal.fire(
+                'Error',
+                'Ocourred an error deleting the student',
+                'error'
+              );
+          },
+        });
       }
     });
   }
